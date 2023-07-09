@@ -17,7 +17,7 @@ class MainPage(BasePage):
     CAR_DROPDOWN_LOCATOR = (By.ID, 'form_car_id')
     CAR_OPTIONS_LOCATOR = (By.XPATH, '//select[@id="form_car_id"]/optgroup')
     SUBMIT_SEARCH_BUTTON_LOCATOR = (By.XPATH, "//div/div[@class='block-select-car__button']/a")
-    COOKIES_ACCEPT_LOCATOR = (By.ID, '1')
+    COOKIES_ACCEPT_LOCATOR = (By.XPATH, "//div[@class='popup-choose-cookies__first-block']/div[@class='popup-choose-cookies__btn-list']/a[@id='1']")
     SELECTOR_ERROR_LOCATOR = (By.XPATH, "//div[@class='popup-error-select validation-tooltip']")
     RELOAD_DROPDOWNS_BUTTON = (By.XPATH, "//a[@id='reset_selector_form']")
     REGISTRATION_NUMBER_INPUT_LOCATOR = (By.ID, "kba1")
@@ -63,6 +63,19 @@ class MainPage(BasePage):
     def close_button_on_popup(self):
         return self.element(MainPage.CLOSE_BUTTON_ON_POP_UP_LOCATOR)
 
+    @property
+    def car_option(self):
+        time.sleep(1)
+        return self.element(MainPage.CAR_OPTIONS_LOCATOR)
+
+    @property
+    def model_option(self):
+        time.sleep(1)
+        return self.element(MainPage.MODEL_OPTIONS_LOCATOR)
+
+    def wait_until_loaded(self, locator):
+        return self.element(locator)
+
     def accept_cookies(self):
         accept_cookies = self.element(MainPage.COOKIES_ACCEPT_LOCATOR)
         accept_cookies.click()
@@ -85,13 +98,15 @@ class MainPage(BasePage):
 
     def choose_random_model(self):
         self.choose_random_maker()
-        self.element(MainPage.MODEL_OPTIONS_LOCATOR)
+        # self.element(MainPage.MODEL_OPTIONS_LOCATOR)
+        self.wait_until_loaded(MainPage.MODEL_OPTIONS_LOCATOR)
         self.choose_random_selector(self.model_dropdown)
         return self
 
     def choose_random_car(self):
         self.choose_random_model()
-        self.element(self.CAR_OPTIONS_LOCATOR)
+        # self.element(MainPage.CAR_OPTIONS_LOCATOR)
+        self.wait_until_loaded(MainPage.CAR_OPTIONS_LOCATOR)
         self.choose_random_selector(self.car_dropdown)
         return self
 

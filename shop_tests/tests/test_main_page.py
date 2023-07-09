@@ -1,5 +1,3 @@
-import time
-
 from shop_tests.helpers.data_store import TestData as test
 
 
